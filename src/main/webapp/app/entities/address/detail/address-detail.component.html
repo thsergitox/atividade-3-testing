@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (address(); as addressRef) {
+      <div>
+        <h2 data-cy="addressDetailsHeading"><span>Address</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ addressRef.id }}</span>
+          </dd>
+          <dt><span>Address 1</span></dt>
+          <dd>
+            <span>{{ addressRef.address1 }}</span>
+          </dd>
+          <dt><span>Address 2</span></dt>
+          <dd>
+            <span>{{ addressRef.address2 }}</span>
+          </dd>
+          <dt><span>City</span></dt>
+          <dd>
+            <span>{{ addressRef.city }}</span>
+          </dd>
+          <dt><span>Postcode</span></dt>
+          <dd>
+            <span>{{ addressRef.postcode }}</span>
+          </dd>
+          <dt><span>Country</span></dt>
+          <dd>
+            <span>{{ addressRef.country }}</span>
+          </dd>
+          <dt><span>Customer</span></dt>
+          <dd>
+            @if (address()!.customer) {
+              <div>
+                <a [routerLink]="['/customer', address()!.customer?.id, 'view']">{{ addressRef.customer?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/address', addressRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,194 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-order-heading" data-cy="OrderCreateUpdateHeading">Create or edit a Order</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let orderDateRef = editForm.get('orderDate')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_orderDate">Order Date</label>
+          <div class="d-flex">
+            <input
+              id="field_orderDate"
+              data-cy="orderDate"
+              type="datetime-local"
+              class="form-control"
+              name="orderDate"
+              formControlName="orderDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (orderDateRef.invalid && (orderDateRef.dirty || orderDateRef.touched)) {
+            <div>
+              @if (editForm.get('orderDate')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('orderDate')?.errors?.datetimelocal"
+                >This field should be a date and time.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_shippedDate">Shipped Date</label>
+          <div class="d-flex">
+            <input
+              id="field_shippedDate"
+              data-cy="shippedDate"
+              type="datetime-local"
+              class="form-control"
+              name="shippedDate"
+              formControlName="shippedDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        @let statusRef = editForm.get('status')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_status">Status</label>
+          <input type="text" class="form-control" name="status" id="field_status" data-cy="status" formControlName="status" />
+          @if (statusRef.invalid && (statusRef.dirty || statusRef.touched)) {
+            <div>
+              @if (editForm.get('status')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              @if (editForm.get('status')?.errors?.minlength) {
+                <small class="form-text text-danger">This field is required to be at least 3 characters.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let totalAmountRef = editForm.get('totalAmount')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_totalAmount">Total Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="totalAmount"
+            id="field_totalAmount"
+            data-cy="totalAmount"
+            formControlName="totalAmount"
+          />
+          @if (totalAmountRef.invalid && (totalAmountRef.dirty || totalAmountRef.touched)) {
+            <div>
+              @if (editForm.get('totalAmount')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              @if (editForm.get('totalAmount')?.errors?.min) {
+                <small class="form-text text-danger">This field should be at least 0.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('totalAmount')?.errors?.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let shippingCostRef = editForm.get('shippingCost')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_shippingCost">Shipping Cost</label>
+          <input
+            type="number"
+            class="form-control"
+            name="shippingCost"
+            id="field_shippingCost"
+            data-cy="shippingCost"
+            formControlName="shippingCost"
+          />
+          @if (shippingCostRef.invalid && (shippingCostRef.dirty || shippingCostRef.touched)) {
+            <div>
+              @if (editForm.get('shippingCost')?.errors?.min) {
+                <small class="form-text text-danger">This field should be at least 0.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('shippingCost')?.errors?.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let trackingNumberRef = editForm.get('trackingNumber')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_trackingNumber">Tracking Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="trackingNumber"
+            id="field_trackingNumber"
+            data-cy="trackingNumber"
+            formControlName="trackingNumber"
+          />
+          @if (trackingNumberRef.invalid && (trackingNumberRef.dirty || trackingNumberRef.touched)) {
+            <div>
+              @if (editForm.get('trackingNumber')?.errors?.maxlength) {
+                <small class="form-text text-danger">This field cannot be longer than 50 characters.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_shippingAddress">Shipping Address</label>
+          <select
+            class="form-control"
+            id="field_shippingAddress"
+            data-cy="shippingAddress"
+            name="shippingAddress"
+            formControlName="shippingAddress"
+            [compareWith]="compareAddress"
+          >
+            <option [ngValue]="null"></option>
+            @for (addressOption of addressesSharedCollection; track $index) {
+              <option [ngValue]="addressOption">{{ addressOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customer">Customer</label>
+          <select
+            class="form-control"
+            id="field_customer"
+            data-cy="customer"
+            name="customer"
+            formControlName="customer"
+            [compareWith]="compareCustomer"
+          >
+            <option [ngValue]="null"></option>
+            @for (customerOption of customersSharedCollection; track $index) {
+              <option [ngValue]="customerOption">{{ customerOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

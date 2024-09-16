@@ -1,0 +1,38 @@
+<div class="container mt-5">
+  <div class="row align-items-center">
+
+    <div class="col-md-4 text-center">
+      <img class="img-fluid rounded" src="../../content/images/jhipster_family_member_3.jpg" alt="JHipster Family Member">
+    </div>
+
+
+    <div class="col-md-8">
+      <h1 class="display-4 font-weight-bold text-primary">Welcome to Online Shop</h1>
+      <p class="lead">Discover the best deals and enjoy the convenience of shopping from your home.</p>
+
+      <div class="mt-4">
+
+        @if (account() !== null) {
+          <div class="alert alert-success" role="alert">
+            @if (account(); as accountRef) {
+              <span id="home-logged-message">
+                Welcome back, <strong>{{ accountRef.login }}</strong>! Enjoy your shopping experience.
+              </span>
+            }
+          </div>
+        } @else {
+
+          <div class="alert alert-warning" role="alert">
+            <p>If you don't have an account, you can try the default ones:</p>
+            <ul>
+              <li>Administrator: <code>login="admin"</code>, <code>password="admin"</code></li>
+              <li>User: <code>login="user"</code>, <code>password="user"</code></li>
+            </ul>
+            <p><a class="alert-link" (click)="login()">Sign in</a> to enjoy a personalized experience.</p>
+          </div>
+        }
+      </div>
+
+    </div>
+  </div>
+</div>

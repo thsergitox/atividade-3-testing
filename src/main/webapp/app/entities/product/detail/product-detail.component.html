@@ -1,0 +1,101 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (product(); as productRef) {
+      <div>
+        <h2 data-cy="productDetailsHeading"><span>Product</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ productRef.id }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ productRef.title }}</span>
+          </dd>
+          <dt><span>Keywords</span></dt>
+          <dd>
+            <span>{{ productRef.keywords }}</span>
+          </dd>
+          <dt><span>Description</span></dt>
+          <dd>
+            <span>{{ productRef.description }}</span>
+          </dd>
+          <dt><span>Rating</span></dt>
+          <dd>
+            <span>{{ productRef.rating }}</span>
+          </dd>
+          <dt><span>Price</span></dt>
+          <dd>
+            <span>{{ productRef.price }}</span>
+          </dd>
+          <dt><span>Quantity In Stock</span></dt>
+          <dd>
+            <span>{{ productRef.quantityInStock }}</span>
+          </dd>
+          <dt><span>Status</span></dt>
+          <dd>
+            <span>{{
+              { null: '', IN_STOCK: 'IN_STOCK', OUT_OF_STOCK: 'OUT_OF_STOCK', DISCONTINUED: 'DISCONTINUED' }[productRef.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span>Weight</span></dt>
+          <dd>
+            <span>{{ productRef.weight }}</span>
+          </dd>
+          <dt><span>Dimensions</span></dt>
+          <dd>
+            <span>{{ productRef.dimensions }}</span>
+          </dd>
+          <dt><span>Date Added</span></dt>
+          <dd>
+            <span>{{ productRef.dateAdded | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Date Modified</span></dt>
+          <dd>
+            <span>{{ productRef.dateModified | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Wish List</span></dt>
+          <dd>
+            @if (product()!.wishList) {
+              <div>
+                <a [routerLink]="['/wish-list', product()!.wishList?.id, 'view']">{{ productRef.wishList?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Order</span></dt>
+          <dd>
+            @if (product()!.order) {
+              <div>
+                <a [routerLink]="['/order', product()!.order?.id, 'view']">{{ productRef.order?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Category</span></dt>
+          <dd>
+            @for (category of productRef.categories; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/category', category.id, 'view']">{{ category?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/product', productRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

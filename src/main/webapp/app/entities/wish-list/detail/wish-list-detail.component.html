@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (wishList(); as wishListRef) {
+      <div>
+        <h2 data-cy="wishListDetailsHeading"><span>Wish List</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ wishListRef.id }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ wishListRef.title }}</span>
+          </dd>
+          <dt><span>Restricted</span></dt>
+          <dd>
+            <span>{{ wishListRef.restricted }}</span>
+          </dd>
+          <dt><span>Customer</span></dt>
+          <dd>
+            @if (wishList()!.customer) {
+              <div>
+                <a [routerLink]="['/customer', wishList()!.customer?.id, 'view']">{{ wishListRef.customer?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/wish-list', wishListRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

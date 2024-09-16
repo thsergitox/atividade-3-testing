@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (order(); as orderRef) {
+      <div>
+        <h2 data-cy="orderDetailsHeading"><span>Order</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ orderRef.id }}</span>
+          </dd>
+          <dt><span>Order Date</span></dt>
+          <dd>
+            <span>{{ orderRef.orderDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Shipped Date</span></dt>
+          <dd>
+            <span>{{ orderRef.shippedDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Status</span></dt>
+          <dd>
+            <span>{{ orderRef.status }}</span>
+          </dd>
+          <dt><span>Total Amount</span></dt>
+          <dd>
+            <span>{{ orderRef.totalAmount }}</span>
+          </dd>
+          <dt><span>Shipping Cost</span></dt>
+          <dd>
+            <span>{{ orderRef.shippingCost }}</span>
+          </dd>
+          <dt><span>Tracking Number</span></dt>
+          <dd>
+            <span>{{ orderRef.trackingNumber }}</span>
+          </dd>
+          <dt><span>Shipping Address</span></dt>
+          <dd>
+            @if (order()!.shippingAddress) {
+              <div>
+                <a [routerLink]="['/address', order()!.shippingAddress?.id, 'view']">{{ orderRef.shippingAddress?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Customer</span></dt>
+          <dd>
+            @if (order()!.customer) {
+              <div>
+                <a [routerLink]="['/customer', order()!.customer?.id, 'view']">{{ orderRef.customer?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/order', orderRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

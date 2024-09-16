@@ -1,0 +1,69 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (category(); as categoryRef) {
+      <div>
+        <h2 data-cy="categoryDetailsHeading"><span>Category</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ categoryRef.id }}</span>
+          </dd>
+          <dt><span>Description</span></dt>
+          <dd>
+            <span>{{ categoryRef.description }}</span>
+          </dd>
+          <dt><span>Sort Order</span></dt>
+          <dd>
+            <span>{{ categoryRef.sortOrder }}</span>
+          </dd>
+          <dt><span>Date Added</span></dt>
+          <dd>
+            <span>{{ categoryRef.dateAdded | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Date Modified</span></dt>
+          <dd>
+            <span>{{ categoryRef.dateModified | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Status</span></dt>
+          <dd>
+            <span>{{
+              { null: '', AVAILABLE: 'AVAILABLE', RESTRICTED: 'RESTRICTED', DISABLED: 'DISABLED' }[categoryRef.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span>Parent</span></dt>
+          <dd>
+            @if (category()!.parent) {
+              <div>
+                <a [routerLink]="['/category', category()!.parent?.id, 'view']">{{ categoryRef.parent?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Product</span></dt>
+          <dd>
+            @for (product of categoryRef.products; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/product', product.id, 'view']">{{ product?.title }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/category', categoryRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
