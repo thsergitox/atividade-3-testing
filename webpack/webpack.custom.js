@@ -16,12 +16,9 @@ module.exports = async (config, options, targetOptions) => {
     config.plugins.push(
       new ESLintPlugin({
         configType: 'flat',
-        extensions: ['ts', 'js', 'html'],
+        extensions: [ 'js', 'html'],
       }),
-      new WebpackNotifierPlugin({
-        title: 'Sample App',
-        contentImage: path.join(__dirname, 'logo-jhipster.png'),
-      }),
+     
     );
   }
 
