@@ -35,12 +35,12 @@ public class Product implements Serializable {
     @Column(name = "keywords", length = 200)
     private String keywords;
 
-    @Size(min = 10)
+    @Size(min = 50)
     @Column(name = "description")
     private String description;
 
-    @Min(value = 0)
-    @Max(value = 5)
+    @Min(value = 1)
+    @Max(value = 10)
     @Column(name = "rating")
     private Integer rating;
 
