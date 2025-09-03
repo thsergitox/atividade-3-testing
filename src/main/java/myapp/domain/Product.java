@@ -45,7 +45,8 @@ public class Product implements Serializable {
     private Integer rating;
 
     @NotNull
-    @DecimalMin(value = "0")
+    @DecimalMin(value = "1")
+    @DecimalMax(value = "9999")
     @Column(name = "price", precision = 21, scale = 2, nullable = false)
     private BigDecimal price;
 
