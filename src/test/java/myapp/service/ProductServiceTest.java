@@ -81,16 +81,17 @@ public class ProductServiceTest {
             "NES",
             null,
             null,
-            0,
+            1,
             1,
             null,
-            BigDecimal.ZERO,
+            BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
             Instant.now()
         );
         Set<ConstraintViolation<Product>> violations_valid = validator.validate(productWithValidTitle);
         // Assert
+        System.err.println(violations_valid);
         assertTrue(violations_valid.isEmpty());
         when(productRepository.save(productWithValidTitle)).thenReturn(productWithValidTitle);
         Product savedProduct = productService.save(productWithValidTitle);
@@ -102,10 +103,10 @@ public class ProductServiceTest {
             "NE",
             null,
             null,
-            0,
+            1,
             1,
             null,
-            BigDecimal.ZERO,
+            BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
             Instant.now()
