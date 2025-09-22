@@ -37,11 +37,11 @@ To run this application, you will need to have Node.js, npm, and Docker installe
 
 1.  **Build the project:**
     ```bash
-    ./mvnw clean installl
+    mvn clean installl
     ```
 2.  **Run application:**
     ```bash
-    ./mvnw
+    mvn
     
 
 
