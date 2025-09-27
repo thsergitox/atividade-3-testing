@@ -90,6 +90,7 @@ public class ProductServiceTest {
             ProductStatus.IN_STOCK,
             1.5,
             Instant.now().minusSeconds(1000),
+            Instant.now().minusSeconds(1000)
         );
         product.setDescription(null); // Explicitly setting null for d==0 case
 
@@ -114,6 +115,7 @@ public class ProductServiceTest {
             new BigDecimal("199.99"),
             ProductStatus.OUT_OF_STOCK, // s = OUT_OF_STOCK
             2.0,
+            Instant.now().minusSeconds(2000),
             Instant.now().minusSeconds(2000)
         );
         product.setDateModified(null); // tsM = vazia
@@ -139,6 +141,7 @@ public class ProductServiceTest {
             new BigDecimal("299.99"),
             ProductStatus.PREORDER, // s = PREORDER
             3.0,
+            Instant.now().minusSeconds(3000),
             Instant.now().minusSeconds(3000)
         );
         product.setDateModified(null); // tsM = vazia
@@ -164,6 +167,7 @@ public class ProductServiceTest {
             new BigDecimal("399.99"),
             ProductStatus.DISCONTINUED, // s = DISCONTINUED
             4.0,
+            Instant.now().minusSeconds(4000),
             Instant.now().minusSeconds(4000)
         );
         product.setDateModified(null); // tsM = vazia
@@ -189,6 +193,7 @@ public class ProductServiceTest {
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
+            Instant.now(),
             Instant.now()
         );
 
@@ -220,6 +225,7 @@ public class ProductServiceTest {
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
+            Instant.now(),
             Instant.now()
         );
 
@@ -251,6 +257,7 @@ public class ProductServiceTest {
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
+            Instant.now(),
             Instant.now()
         );
 
@@ -278,6 +285,7 @@ public class ProductServiceTest {
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
+            Instant.now(),
             Instant.now()
         );
 
@@ -303,6 +311,7 @@ public class ProductServiceTest {
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
+            Instant.now(),
             Instant.now()
         );
 
@@ -329,6 +338,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             Instant.now()
         );
 
@@ -354,6 +364,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             Instant.now()
         );
 
@@ -379,6 +390,7 @@ public class ProductServiceTest {
             new BigDecimal("0.99"),
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             Instant.now()
         );
 
@@ -404,6 +416,7 @@ public class ProductServiceTest {
             new BigDecimal("10000"),
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             Instant.now()
         );
 
@@ -429,6 +442,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             Instant.now()
         );
 
@@ -454,6 +468,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             null,
             null,
+            Instant.now(),
             Instant.now()
         );
 
@@ -479,6 +494,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             -1.0,
+            Instant.now(),
             Instant.now()
         );
 
@@ -505,6 +521,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             Instant.now()
         );
 
@@ -533,6 +550,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             null
         );
 
@@ -559,6 +577,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             futureDate
         );
 
@@ -584,6 +603,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             oldDate
         );
 
@@ -609,6 +629,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             Instant.now()
         );
         product.setDateModified(futureDate);
@@ -636,6 +657,7 @@ public class ProductServiceTest {
             BigDecimal.TEN,
             ProductStatus.IN_STOCK,
             null,
+            Instant.now(),
             dateAdded
         );
         product.setDateModified(dateModified);
