@@ -54,7 +54,8 @@ public class ProductServiceTest {
         BigDecimal price,
         ProductStatus status,
         Double weight,
-        Instant dateAdded
+        Instant dateAdded,
+        Instant dateModified
     ) {
         Product product = new Product()
             .id(id)
@@ -67,7 +68,8 @@ public class ProductServiceTest {
             .price(price)
             .status(status)
             .weight(weight)
-            .dateAdded(dateAdded);
+            .dateAdded(dateAdded)
+            .dateModified(dateModified);
 
         return product;
     }
@@ -87,7 +89,7 @@ public class ProductServiceTest {
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
-            Instant.now().minusSeconds(1000)
+            Instant.now().minusSeconds(1000),
         );
         product.setDescription(null); // Explicitly setting null for d==0 case
 
