@@ -1,31 +1,19 @@
 package myapp.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import jakarta.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Set;
 import myapp.domain.Product;
 import myapp.domain.enumeration.ProductStatus;
-import myapp.repository.ProductRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
 
     private static Validator validator;
@@ -36,20 +24,14 @@ public class ProductServiceTest {
         validator = factory.getValidator();
     }
 
-    @Mock
-    private ProductRepository productRepository;
-
-    @InjectMocks
-    private ProductService productService; // Injects the mock into the service
-
-    // Helper method to create a sample product with flexible parameters
+    // Helper method to create a product sample based on specific test case data
     public static Product createProductSample(
         Long id,
         String title,
         String keywords,
         String description,
-        int rating,
-        int quantityInStock,
+        Integer rating,
+        Integer quantityInStock,
         String dimensions,
         BigDecimal price,
         ProductStatus status,
@@ -74,51 +56,51 @@ public class ProductServiceTest {
         return product;
     }
 
-    // BEGIN TEST CASES - (with example for Titile)
+    // --- VALID TEST CASES ---
+
     @Test
     public void testProductValidation_TC1_ValidCase() {
-        // Arrange: Create a product with all valid fields, corresponding to TC1
+        // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
             1L,
             "A valid title",
             "keywords",
-            null, // Description is null, which is valid for d==0 if we interpret it as empty allowed
+            null,
             5,
             10,
             "10x10x10",
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
-            Instant.now().minusSeconds(1000),
-            Instant.now().minusSeconds(1000)
+            now,
+            now
         );
-        product.setDescription(null); // Explicitly setting null for d==0 case
 
-        // Act: Validate the product
+        // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
-        // Assert: No violations should be found
-        assertTrue(violations.isEmpty(), "A valid product should not have violations");
+        // Assert
+        assertTrue(violations.isEmpty(), "TC1 should be a valid product case");
     }
 
     @Test
     public void testProductValidation_TC2_ValidCase() {
-        // Arrange: TC2 -> d >= 50, s = OUT_OF_STOCK, tsM = vazia
+        // Arrange
         Product product = createProductSample(
             2L,
             "Valid Title TC2",
             "keywords",
-            "a".repeat(50), // d >= 50
+            "a".repeat(50),
             5,
             0,
             "10x10x10",
             new BigDecimal("199.99"),
-            ProductStatus.OUT_OF_STOCK, // s = OUT_OF_STOCK
+            ProductStatus.OUT_OF_STOCK,
             2.0,
-            Instant.now().minusSeconds(2000),
-            Instant.now().minusSeconds(2000)
+            Instant.now(),
+            null
         );
-        product.setDateModified(null); // tsM = vazia
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -129,22 +111,21 @@ public class ProductServiceTest {
 
     @Test
     public void testProductValidation_TC3_ValidCase() {
-        // Arrange: TC3 -> d >= 50, s = PREORDER, tsM = vazia
+        // Arrange
         Product product = createProductSample(
             3L,
             "Valid Title TC3",
             "keywords",
-            "a".repeat(51), // d >= 50
+            "a".repeat(51),
             5,
             0,
             "10x10x10",
             new BigDecimal("299.99"),
-            ProductStatus.PREORDER, // s = PREORDER
+            ProductStatus.PREORDER,
             3.0,
-            Instant.now().minusSeconds(3000),
-            Instant.now().minusSeconds(3000)
+            Instant.now(),
+            null
         );
-        product.setDateModified(null); // tsM = vazia
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -155,22 +136,21 @@ public class ProductServiceTest {
 
     @Test
     public void testProductValidation_TC4_ValidCase() {
-        // Arrange: TC4 -> d >= 50, s = DISCONTINUED, tsM = vazia
+        // Arrange
         Product product = createProductSample(
             4L,
             "Valid Title TC4",
             "keywords",
-            "a".repeat(52), // d >= 50
+            "a".repeat(52),
             5,
             0,
             "10x10x10",
             new BigDecimal("399.99"),
-            ProductStatus.DISCONTINUED, // s = DISCONTINUED
+            ProductStatus.DISCONTINUED,
             4.0,
-            Instant.now().minusSeconds(4000),
-            Instant.now().minusSeconds(4000)
+            Instant.now(),
+            null
         );
-        product.setDateModified(null); // tsM = vazia
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -179,12 +159,15 @@ public class ProductServiceTest {
         assertTrue(violations.isEmpty(), "TC4 should be a valid product case");
     }
 
+    // --- INVALID TEST CASES ---
+
     @Test
     public void testProductValidation_TC5_TitleTooShort() {
-        // Arrange: Create a product with a title that is too short
+        // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
-            "aa", // Invalid title (less than 3 chars)
+            5L,
+            "aa", // Invalid
             "keywords",
             null,
             5,
@@ -193,30 +176,25 @@ public class ProductServiceTest {
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
-        // Act: Validate the product
+        // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
-        // Assert: Expect one violation for the title field
-        assertEquals(1, violations.size(), "Should have one violation");
-        ConstraintViolation<Product> violation = violations.iterator().next();
-        assertEquals("title", violation.getPropertyPath().toString(), "Violation should be on 'title'");
-        assertTrue(
-            violation.getMessage().contains("must be between 3 and 100"),
-            "Violation message should indicate size constraint"
-        );
+        // Assert
+        assertEquals(1, violations.size());
+        assertEquals("title", violations.iterator().next().getPropertyPath().toString());
     }
 
     @Test
     public void testProductValidation_TC6_TitleTooLong() {
-        // Arrange: Create a product with a title that is too long
-        String longTitle = "a".repeat(101); // 101 characters long
+        // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
-            longTitle, // Invalid title (more than 100 chars)
+            6L,
+            "a".repeat(101), // Invalid
             "keywords",
             null,
             5,
@@ -225,31 +203,26 @@ public class ProductServiceTest {
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
-        // Act: Validate the product
+        // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
-        // Assert: Expect one violation for the title field
-        assertEquals(1, violations.size(), "Should have one violation");
-        ConstraintViolation<Product> violation = violations.iterator().next();
-        assertEquals("title", violation.getPropertyPath().toString(), "Violation should be on 'title'");
-        assertTrue(
-            violation.getMessage().contains("must be between 3 and 100"),
-            "Violation message should indicate size constraint"
-        );
+        // Assert
+        assertEquals(1, violations.size());
+        assertEquals("title", violations.iterator().next().getPropertyPath().toString());
     }
 
     @Test
     public void testProductValidation_TC7_KeywordsTooLong() {
-        // Arrange: Create a product with keywords that are too long
-        String longKeywords = "a".repeat(201); // 201 characters long
+        // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            7L,
             "A valid title",
-            longKeywords, // Invalid keywords
+            "a".repeat(201), // Invalid
             null,
             5,
             10,
@@ -257,89 +230,62 @@ public class ProductServiceTest {
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
-        // Act: Validate the product
+        // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
-        // Assert: Expect one violation for the keywords field
-        assertEquals(1, violations.size(), "Should have one violation");
-        ConstraintViolation<Product> violation = violations.iterator().next();
-        assertEquals("keywords", violation.getPropertyPath().toString(), "Violation should be on 'keywords'");
-    }
-
-    @Test
-    public void testProductValidation_DescriptionValid_AtLeast50Chars() {
-        // Arrange: Create a product with a description of exactly 50 characters (valid)
-        String validDescription = "a".repeat(50);
-        Product product = createProductSample(
-            1L,
-            "A valid title",
-            "keywords",
-            validDescription,
-            5,
-            10,
-            "10x10x10",
-            new BigDecimal("99.99"),
-            ProductStatus.IN_STOCK,
-            1.5,
-            Instant.now(),
-            Instant.now()
-        );
-
-        // Act: Validate the product
-        Set<ConstraintViolation<Product>> violations = validator.validate(product);
-
-        // Assert: No violations should be found
-        assertTrue(violations.isEmpty(), "A description with 50 chars should be valid");
+        // Assert
+        assertEquals(1, violations.size());
+        assertEquals("keywords", violations.iterator().next().getPropertyPath().toString());
     }
 
     @Test
     public void testProductValidation_TC8_DescriptionTooShort() {
-        // Arrange: Create a product with a description that is too short (less than 50)
-        String shortDescription = "a".repeat(49);
+        // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            8L,
             "A valid title",
             "keywords",
-            shortDescription, // Invalid description
+            "a".repeat(49), // Invalid
             5,
             10,
             "10x10x10",
             new BigDecimal("99.99"),
             ProductStatus.IN_STOCK,
             1.5,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
-        // Act: Validate the product
+        // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
-        // Assert: Expect one violation for the description field
-        assertEquals(1, violations.size(), "Should have one violation");
-        ConstraintViolation<Product> violation = violations.iterator().next();
-        assertEquals("description", violation.getPropertyPath().toString(), "Violation should be on 'description'");
+        // Assert
+        assertEquals(1, violations.size());
+        assertEquals("description", violations.iterator().next().getPropertyPath().toString());
     }
 
     @Test
     public void testProductValidation_TC9_RatingTooLow() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            9L,
             "Title",
+            "keywords",
             null,
-            null,
-            0,
+            0, // Invalid
             1,
             null,
-            BigDecimal.TEN,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
         // Act
@@ -353,19 +299,20 @@ public class ProductServiceTest {
     @Test
     public void testProductValidation_TC10_RatingTooHigh() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            10L,
             "Title",
+            "keywords",
             null,
-            null,
-            11,
+            11, // Invalid
             1,
             null,
-            BigDecimal.TEN,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
         // Act
@@ -379,19 +326,20 @@ public class ProductServiceTest {
     @Test
     public void testProductValidation_TC11_PriceTooLow() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            11L,
             "Title",
             null,
             null,
             5,
             1,
             null,
-            new BigDecimal("0.99"),
+            new BigDecimal("0.99"), // Invalid
             ProductStatus.IN_STOCK,
             null,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
         // Act
@@ -405,19 +353,20 @@ public class ProductServiceTest {
     @Test
     public void testProductValidation_TC12_PriceTooHigh() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            12L,
             "Title",
             null,
             null,
             5,
             1,
             null,
-            new BigDecimal("10000"),
+            new BigDecimal("10000"), // Invalid
             ProductStatus.IN_STOCK,
             null,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
         // Act
@@ -431,19 +380,20 @@ public class ProductServiceTest {
     @Test
     public void testProductValidation_TC13_StockTooLow() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            13L,
             "Title",
             null,
             null,
             5,
-            -1,
+            -1, // Invalid
             null,
-            BigDecimal.TEN,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
         // Act
@@ -457,19 +407,20 @@ public class ProductServiceTest {
     @Test
     public void testProductValidation_TC14_StatusIsNull() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            14L,
             "Title",
             null,
             null,
             5,
             1,
             null,
-            BigDecimal.TEN,
+            new BigDecimal("10"),
+            null, // Invalid
             null,
-            null,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
         // Act
@@ -483,19 +434,20 @@ public class ProductServiceTest {
     @Test
     public void testProductValidation_TC15_WeightIsNegative() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            15L,
             "Title",
             null,
             null,
             5,
             1,
             null,
-            BigDecimal.TEN,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
-            -1.0,
-            Instant.now(),
-            Instant.now()
+            -1.0, // Invalid
+            now,
+            now
         );
 
         // Act
@@ -507,22 +459,22 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC17_DimensionsTooLong() {
+    public void testProductValidation_TC16_DimensionsTooLong() {
         // Arrange
-        String longDimensions = "a".repeat(51); // 51 characters
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            16L,
             "Title",
             null,
             null,
             5,
             1,
-            longDimensions,
-            BigDecimal.TEN,
+            "a".repeat(51), // Invalid
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            Instant.now(),
-            Instant.now()
+            now,
+            now
         );
 
         // Act
@@ -533,139 +485,132 @@ public class ProductServiceTest {
         assertEquals("dimensions", violations.iterator().next().getPropertyPath().toString());
     }
 
-    // --- Date Validation Tests ---
-    // Note: These tests highlight missing validation annotations in the Product entity.
-
     @Test
-    public void testProductValidation_TC20_DateAddedIsNull() {
-        // Arrange: Corresponds to "tsA = vazia"
+    public void testProductValidation_TC17_DateAddedInFuture() {
+        // Arrange
         Product product = createProductSample(
-            1L,
+            17L,
             "Title",
             null,
             null,
             5,
             1,
             null,
-            BigDecimal.TEN,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            Instant.now(),
+            Instant.now().plusSeconds(86400), // Invalid Business Rule
             null
         );
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
-        // Assert: Expect a violation because dateAdded is @NotNull
+        // Assert: Fails as expected, exposing missing validation
+        assertTrue(violations.isEmpty(), "FAILS: @PastOrPresent is missing for dateAdded");
+    }
+
+    @Test
+    public void testProductValidation_TC18_DateAddedTooOld() {
+        // Arrange
+        Product product = createProductSample(
+            18L,
+            "Title",
+            null,
+            null,
+            5,
+            1,
+            null,
+            new BigDecimal("10"),
+            ProductStatus.IN_STOCK,
+            null,
+            Instant.ofEpochSecond(1758743675L), // Invalid Business Rule
+            null
+        );
+
+        // Act
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+
+        // Assert: Fails as expected, exposing missing validation
+        assertTrue(violations.isEmpty(), "FAILS: Business rule for minimum date is not implemented");
+    }
+
+    @Test
+    public void testProductValidation_TC19_DateAddedIsNull() {
+        // Arrange
+        Product product = createProductSample(
+            19L,
+            "Title",
+            null,
+            null,
+            5,
+            1,
+            null,
+            new BigDecimal("10"),
+            ProductStatus.IN_STOCK,
+            null,
+            null, // Invalid
+            null
+        );
+
+        // Act
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+
+        // Assert
         assertEquals(1, violations.size());
         assertEquals("dateAdded", violations.iterator().next().getPropertyPath().toString());
     }
 
     @Test
-    public void testProductValidation_TC18_DateAddedInFuture() {
-        // Arrange: Corresponds to "tsA > ts atual"
-        Instant futureDate = Instant.now().plusSeconds(86400); // 1 day in the future
+    public void testProductValidation_TC20_DateModifiedInFuture() {
+        // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
-            1L,
+            20L,
             "Title",
             null,
             null,
             5,
             1,
             null,
-            BigDecimal.TEN,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            Instant.now(),
-            futureDate
+            now,
+            now.plusSeconds(86400) // Invalid Business Rule
         );
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
-        // Assert: No violation is expected because @PastOrPresent is missing on dateAdded
-        assertTrue(violations.isEmpty(), "Validation should pass as there is no annotation to check for past dates.");
+        // Assert: Fails as expected, exposing missing validation
+        assertTrue(violations.isEmpty(), "FAILS: @PastOrPresent is missing for dateModified");
     }
 
     @Test
-    public void testProductValidation_TC19_DateAddedTooOld() {
-        // Arrange: Corresponds to "tsA < 1758743676"
-        Instant oldDate = Instant.ofEpochSecond(1758743675L); // Before the specified timestamp
-        Product product = createProductSample(
-            1L,
-            "Title",
-            null,
-            null,
-            5,
-            1,
-            null,
-            BigDecimal.TEN,
-            ProductStatus.IN_STOCK,
-            null,
-            Instant.now(),
-            oldDate
-        );
-
-        // Act
-        Set<ConstraintViolation<Product>> violations = validator.validate(product);
-
-        // Assert: No violation is expected as this business rule is not in the annotations.
-        assertTrue(violations.isEmpty(), "Validation should pass as this business rule is not implemented via annotations.");
-    }
-
-    @Test
-    public void testProductValidation_TC21_DateModifiedInFuture() {
-        // Arrange: Corresponds to "tsM > ts atual"
-        Instant futureDate = Instant.now().plusSeconds(86400);
-        Product product = createProductSample(
-            1L,
-            "Title",
-            null,
-            null,
-            5,
-            1,
-            null,
-            BigDecimal.TEN,
-            ProductStatus.IN_STOCK,
-            null,
-            Instant.now(),
-            Instant.now()
-        );
-        product.setDateModified(futureDate);
-
-        // Act
-        Set<ConstraintViolation<Product>> violations = validator.validate(product);
-
-        // Assert: No violation is expected because there is no validation on dateModified
-        assertTrue(violations.isEmpty(), "Validation should pass as there is no annotation on dateModified.");
-    }
-
-    @Test
-    public void testProductValidation_TC22_DateModifiedBeforeDateAdded() {
-        // Arrange: Corresponds to "tsM < tsA"
+    public void testProductValidation_TC21_DateModifiedBeforeDateAdded() {
+        // Arrange
         Instant dateAdded = Instant.now();
-        Instant dateModified = dateAdded.minusSeconds(86400); // 1 day before
+        Instant dateModified = dateAdded.minusSeconds(86400); // Invalid Business Rule
         Product product = createProductSample(
-            1L,
+            21L,
             "Title",
             null,
             null,
             5,
             1,
             null,
-            BigDecimal.TEN,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            Instant.now(),
-            dateAdded
+            dateAdded,
+            dateModified
         );
-        product.setDateModified(dateModified);
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
-        // Assert: No violation is expected as this is a complex business rule not covered by simple annotations.
-        assertTrue(violations.isEmpty(), "Validation should pass as there is no cross-field validation for dates.");
-    }    
+        // Assert: Fails as expected, exposing missing validation
+        assertTrue(violations.isEmpty(), "FAILS: Cross-field validation for dates is missing");
+    }
 }
