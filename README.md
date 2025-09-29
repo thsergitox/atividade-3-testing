@@ -20,7 +20,7 @@ Os testes foram estruturados utilizando o padrão **AAA (Arrange, Act, Assert)**
 
 ## Casos de Teste Implementados
 
-A seguir, uma descrição detalhada de cada caso de teste implementado em `ProductServiceTest.java`.
+A seguir, uma descrição detalhada de cada caso de teste implementado em `ProductServiceTest.java`, com base na análise de classes de equivalência documentada no arquivo `test_cases_coverage.html`.
 
 ### Casos de Teste Válidos
 
@@ -100,6 +100,7 @@ Para compilar, testar e executar a aplicação, utilize os seguintes comandos Ma
     ```
     Após a inicialização, a aplicação estará disponível em `http://localhost:8080`.
 
-## Captura de Tela dos Resultados
+## Captura de Tela 
 
-Nesta seção, insira uma captura de tela mostrando a execução bem-sucedida dos testes (e as falhas esperadas).
+
+![alt text](image.png)
