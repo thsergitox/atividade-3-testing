@@ -64,17 +64,17 @@ public class ProductServiceTest {
         Instant now = Instant.now();
         Product product = createProductSample(
             1L,
-            "A valid title",
-            "keywords",
+            "TC1",
             null,
-            5,
-            10,
-            "10x10x10",
-            new BigDecimal("99.99"),
+            null,
+            null,
+            0,
+            null,
+            new BigDecimal("1"),
             ProductStatus.IN_STOCK,
-            1.5,
+            null,
             now,
-            now
+            null
         );
 
         // Act
@@ -87,19 +87,20 @@ public class ProductServiceTest {
     @Test
     public void testProductValidation_TC2_ValidCase() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
             2L,
-            "Valid Title TC2",
-            "keywords",
+            "TC_2",
+            "",
             "a".repeat(50),
-            5,
-            0,
-            "10x10x10",
-            new BigDecimal("199.99"),
+            1,
+            1,
+            "",
+            new BigDecimal("2"),
             ProductStatus.OUT_OF_STOCK,
-            2.0,
-            Instant.now(),
-            null
+            0.0,
+            now.minusSeconds(1),
+            now
         );
 
         // Act
@@ -112,19 +113,20 @@ public class ProductServiceTest {
     @Test
     public void testProductValidation_TC3_ValidCase() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
             3L,
-            "Valid Title TC3",
-            "keywords",
+            "a".repeat(99),
+            "a",
             "a".repeat(51),
-            5,
-            0,
-            "10x10x10",
-            new BigDecimal("299.99"),
+            2,
+            1,
+            "a",
+            new BigDecimal("9998"),
             ProductStatus.PREORDER,
-            3.0,
-            Instant.now(),
-            null
+            1.0,
+            now,
+            now.plusSeconds(1)
         );
 
         // Act
@@ -137,19 +139,20 @@ public class ProductServiceTest {
     @Test
     public void testProductValidation_TC4_ValidCase() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
             4L,
-            "Valid Title TC4",
-            "keywords",
-            "a".repeat(52),
-            5,
-            0,
-            "10x10x10",
-            new BigDecimal("399.99"),
+            "a".repeat(100),
+            "a".repeat(199),
+            null,
+            9,
+            1,
+            "a".repeat(49),
+            new BigDecimal("9999"),
             ProductStatus.DISCONTINUED,
-            4.0,
-            Instant.now(),
-            null
+            1.0,
+            now,
+            now.plusSeconds(2)
         );
 
         // Act
@@ -159,25 +162,51 @@ public class ProductServiceTest {
         assertTrue(violations.isEmpty(), "TC4 should be a valid product case");
     }
 
+    @Test
+    public void testProductValidation_TC5_ValidCase() {
+        // Arrange
+        Instant now = Instant.now();
+        Product product = createProductSample(
+            4L,
+            "Valid",
+            "a".repeat(200),
+            null,
+            10,
+            1,
+            "a".repeat(50),
+            new BigDecimal("9999"),
+            ProductStatus.DISCONTINUED,
+            1.0,
+            now,
+            now
+        );
+
+        // Act
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+
+        // Assert
+        assertTrue(violations.isEmpty(), "TC5 should be a valid product case");
+    }
+
     // --- INVALID TEST CASES ---
 
     @Test
-    public void testProductValidation_TC5_TitleTooShort() {
+    public void testProductValidation_TC6_TitleTooShort() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
             5L,
             "aa", // Invalid
-            "keywords",
             null,
-            5,
-            10,
-            "10x10x10",
-            new BigDecimal("99.99"),
+            null,
+            null,
+            0,
+            null,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
-            1.5,
+            null,
             now,
-            now
+            null
         );
 
         // Act
@@ -189,22 +218,22 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC6_TitleTooLong() {
+    public void testProductValidation_TC7_TitleTooLong() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
             6L,
             "a".repeat(101), // Invalid
-            "keywords",
             null,
-            5,
-            10,
-            "10x10x10",
-            new BigDecimal("99.99"),
+            null,
+            null,
+            0,
+            null,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
-            1.5,
+            null,
             now,
-            now
+            null
         );
 
         // Act
@@ -216,22 +245,22 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC7_KeywordsTooLong() {
+    public void testProductValidation_TC8_KeywordsTooLong() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
             7L,
-            "A valid title",
+            "Title",
             "a".repeat(201), // Invalid
             null,
-            5,
-            10,
-            "10x10x10",
-            new BigDecimal("99.99"),
+            null,
+            0,
+            null,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
-            1.5,
+            null,
             now,
-            now
+            null
         );
 
         // Act
@@ -243,22 +272,22 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC8_DescriptionTooShort() {
+    public void testProductValidation_TC9_DescriptionTooShort() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
             8L,
-            "A valid title",
-            "keywords",
+            "Title",
+            null,
             "a".repeat(49), // Invalid
-            5,
-            10,
-            "10x10x10",
-            new BigDecimal("99.99"),
+            null,
+            0,
+            null,
+            new BigDecimal("10"),
             ProductStatus.IN_STOCK,
-            1.5,
+            null,
             now,
-            now
+            null
         );
 
         // Act
@@ -270,22 +299,22 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC9_RatingTooLow() {
+    public void testProductValidation_TC10_RatingTooLow() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
             9L,
             "Title",
-            "keywords",
+            null,
             null,
             0, // Invalid
-            1,
+            0,
             null,
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
             now,
-            now
+            null
         );
 
         // Act
@@ -297,22 +326,22 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC10_RatingTooHigh() {
+    public void testProductValidation_TC11_RatingTooHigh() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
             10L,
             "Title",
-            "keywords",
+            null,
             null,
             11, // Invalid
-            1,
+            0,
             null,
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
             now,
-            now
+            null
         );
 
         // Act
@@ -324,7 +353,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC11_PriceTooLow() {
+    public void testProductValidation_TC112_PriceTooLow() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
@@ -332,14 +361,14 @@ public class ProductServiceTest {
             "Title",
             null,
             null,
-            5,
-            1,
+            11,
+            0,
             null,
-            new BigDecimal("0.99"), // Invalid
+            new BigDecimal("0"), // Invalid
             ProductStatus.IN_STOCK,
             null,
             now,
-            now
+            null
         );
 
         // Act
@@ -351,7 +380,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC12_PriceTooHigh() {
+    public void testProductValidation_TC13_PriceTooHigh() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
@@ -359,14 +388,14 @@ public class ProductServiceTest {
             "Title",
             null,
             null,
-            5,
-            1,
+            11,
+            0,
             null,
             new BigDecimal("10000"), // Invalid
             ProductStatus.IN_STOCK,
             null,
             now,
-            now
+            null
         );
 
         // Act
@@ -378,7 +407,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC13_StockTooLow() {
+    public void testProductValidation_TC14_StockTooLow() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
@@ -386,14 +415,14 @@ public class ProductServiceTest {
             "Title",
             null,
             null,
-            5,
+            null,
             -1, // Invalid
             null,
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
             now,
-            now
+            null
         );
 
         // Act
@@ -405,7 +434,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC14_StatusIsNull() {
+    public void testProductValidation_TC15_StatusUnexpected() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
@@ -413,14 +442,14 @@ public class ProductServiceTest {
             "Title",
             null,
             null,
-            5,
-            1,
+            null,
+            0,
             null,
             new BigDecimal("10"),
             null, // Invalid
             null,
             now,
-            now
+            null
         );
 
         // Act
@@ -432,7 +461,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC15_WeightIsNegative() {
+    public void testProductValidation_TC16_WeightIsNegative() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
@@ -440,8 +469,8 @@ public class ProductServiceTest {
             "Title",
             null,
             null,
-            5,
-            1,
+            null,
+            0,
             null,
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
@@ -459,7 +488,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC16_DimensionsTooLong() {
+    public void testProductValidation_TC18_DimensionsTooLong() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
@@ -467,8 +496,8 @@ public class ProductServiceTest {
             "Title",
             null,
             null,
-            5,
-            1,
+            null,
+            0,
             "a".repeat(51), // Invalid
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
@@ -486,20 +515,21 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC17_DateAddedInFuture() {
+    public void testProductValidation_TC19_DateAddedInFuture() {
         // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
             17L,
             "Title",
             null,
             null,
-            5,
-            1,
+            null,
+            0,
             null,
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            Instant.now().plusSeconds(86400), // Invalid Business Rule
+            now.plusSeconds(1), // Invalid Business Rule
             null
         );
 
@@ -511,33 +541,9 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC18_DateAddedTooOld() {
+    public void testProductValidation_TC20_DateAddedIsNull() {
         // Arrange
-        Product product = createProductSample(
-            18L,
-            "Title",
-            null,
-            null,
-            5,
-            1,
-            null,
-            new BigDecimal("10"),
-            ProductStatus.IN_STOCK,
-            null,
-            Instant.ofEpochSecond(1758743675L), // Invalid Business Rule
-            null
-        );
-
-        // Act
-        Set<ConstraintViolation<Product>> violations = validator.validate(product);
-
-        // Assert: Fails as expected, exposing missing validation
-        assertTrue(violations.isEmpty(), "FAILS: Business rule for minimum date is not implemented");
-    }
-
-    @Test
-    public void testProductValidation_TC19_DateAddedIsNull() {
-        // Arrange
+        Instant now = Instant.now();
         Product product = createProductSample(
             19L,
             "Title",
@@ -562,7 +568,33 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC20_DateModifiedInFuture() {
+    public void testProductValidation_TC21_DateModifiedIsDateAdded() {
+        // Arrange
+        Instant now = Instant.now();
+        Product product = createProductSample(
+            21L,
+            "Title",
+            null,
+            null,
+            null,
+            0,
+            null,
+            new BigDecimal("10"),
+            ProductStatus.IN_STOCK,
+            null,
+            now,
+            now
+        );
+
+        // Act
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+
+        // Assert: Fails as expected, exposing missing validation
+        assertTrue(violations.isEmpty(), "FAILS: Cross-field validation for dates is missing");
+    }
+
+    @Test
+    public void testProductValidation_TC22_DateModifiedInFuture() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
@@ -570,14 +602,14 @@ public class ProductServiceTest {
             "Title",
             null,
             null,
-            5,
-            1,
+            null,
+            0,
             null,
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
             now,
-            now.plusSeconds(86400) // Invalid Business Rule
+            now.plusSeconds(1) // Invalid Business Rule
         );
 
         // Act
@@ -587,30 +619,4 @@ public class ProductServiceTest {
         assertTrue(violations.isEmpty(), "FAILS: @PastOrPresent is missing for dateModified");
     }
 
-    @Test
-    public void testProductValidation_TC21_DateModifiedBeforeDateAdded() {
-        // Arrange
-        Instant dateAdded = Instant.now();
-        Instant dateModified = dateAdded.minusSeconds(86400); // Invalid Business Rule
-        Product product = createProductSample(
-            21L,
-            "Title",
-            null,
-            null,
-            5,
-            1,
-            null,
-            new BigDecimal("10"),
-            ProductStatus.IN_STOCK,
-            null,
-            dateAdded,
-            dateModified
-        );
-
-        // Act
-        Set<ConstraintViolation<Product>> violations = validator.validate(product);
-
-        // Assert: Fails as expected, exposing missing validation
-        assertTrue(violations.isEmpty(), "FAILS: Cross-field validation for dates is missing");
-    }
 }
