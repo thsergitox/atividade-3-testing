@@ -84,7 +84,7 @@ Estes testes verificam se a entidade `Product` rejeita dados que violam as regra
 
 
 > **Nota Importante sobre os Testes de Data:**
-> Os casos de teste TC19, TC21 e TC22 foram intencionalmente desenhados para **passar com sucesso** e, assim, evidenciar a ausência de regras de validação cruciais na entidade `Product`. Eles utilizam a asserção `assertTrue(violations.isEmpty())`, que só é bem-sucedida se o validador **não encontrar nenhum erro**. Como as validações de regras de negócio (ex: `@PastOrPresent`) não existem no código, o validador não reporta violações, a lista de erros fica vazia e o teste "passa" em verde. Esta é uma técnica para provar e documentar que uma validação específica está em falta no código-fonte.
+> Os casos de teste TC19, TC21, TC22 e TC24 foram intencionalmente desenhados para **passar com sucesso** e, assim, evidenciar a ausência de regras de validação cruciais na entidade `Product`. Eles utilizam a asserção `assertTrue(violations.isEmpty())`, que só é bem-sucedida se o validador **não encontrar nenhum erro**. Como as validações de regras de negócio (ex: `@PastOrPresent`) não existem no código, o validador não reporta violações, a lista de erros fica vazia e o teste "passa" em verde. Esta é uma técnica para provar e documentar que uma validação específica está em falta no código-fonte.
 
 ## Como Executar o Projeto
 
@@ -95,6 +95,8 @@ Para compilar, testar e executar a aplicação, utilize os seguintes comandos Ma
     ```bash
     mvn clean install
     ```
+O comando acima não deve funcionar porque os testes falharam.
+
 
 2.  **Executar os Testes:**
     Para rodar a suíte de testes de unidade e verificar a lógica da aplicação, execute:
