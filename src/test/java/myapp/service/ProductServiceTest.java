@@ -652,4 +652,113 @@ public class ProductServiceTest {
         );
     }
 
+     @Test
+    public void testProductValidation_TC23_TitleIsNull() {
+        // Arrange
+        Instant now = Instant.now();
+        Product product = createProductSample(
+            14L,
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            new BigDecimal("10"),
+            null, 
+            null,
+            now
+        );
+        product.setDateModified(null);
+
+        // Act
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+
+        // Assert
+        assertEquals(1, violations.size());
+        assertEquals("title", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    @Test
+    public void testProductValidation_TC24_PriceIsNull() {
+        // Arrange
+        Instant now = Instant.now();
+        Product product = createProductSample(
+            14L,
+            "Title",
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null, 
+            null,
+            now
+        );
+        product.setDateModified(null);
+
+        // Act
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+
+        // Assert
+        assertEquals(1, violations.size());
+        assertEquals("price", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    @Test
+    public void testProductValidation_TC25_QuantityInStockIsNull() {
+        // Arrange
+        Instant now = Instant.now();
+        Product product = createProductSample(
+            14L,
+            "Title",
+            null,
+            null,
+            null,
+            null,
+            null,
+            new BigDecimal("10"),
+            null,
+            null,
+            now
+        );
+        product.setDateModified(null);
+
+        // Act
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+
+        // Assert
+        assertEquals(1, violations.size());
+        assertEquals("quantityInStock", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    @Test
+    public void testProductValidation_TC26_StatusNotValid() {
+        // Arrange
+        Instant now = Instant.now();
+        Product product = createProductSample(
+            14L,
+            "Title",
+            null,
+            null,
+            null,
+            0,
+            null,
+            new BigDecimal("10"),
+            "RANDOM_STRING", 
+            null,
+            now
+        );
+        product.setDateModified(null);
+
+        // Act
+        Set<ConstraintViolation<Product>> violations = validator.validate(product);
+
+        // Assert
+        assertEquals(1, violations.size());
+        assertEquals("status", violations.iterator().next().getPropertyPath().toString());
+    }
+
+
 }
