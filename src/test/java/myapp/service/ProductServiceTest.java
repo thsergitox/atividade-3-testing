@@ -36,8 +36,7 @@ public class ProductServiceTest {
         BigDecimal price,
         ProductStatus status,
         Double weight,
-        Instant dateAdded,
-        Instant dateModified
+        Instant dateAdded
     ) {
         Product product = new Product()
             .id(id)
@@ -51,7 +50,6 @@ public class ProductServiceTest {
             .status(status)
             .weight(weight)
             .dateAdded(dateAdded)
-            .dateModified(dateModified);
 
         return product;
     }
@@ -73,9 +71,9 @@ public class ProductServiceTest {
             new BigDecimal("1"),
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -99,9 +97,9 @@ public class ProductServiceTest {
             new BigDecimal("2"),
             ProductStatus.OUT_OF_STOCK,
             0.0,
-            now.minusSeconds(1),
-            now
+            now.minusSeconds(1)
         );
+        product.setDateModified(now);
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -125,9 +123,10 @@ public class ProductServiceTest {
             new BigDecimal("9998"),
             ProductStatus.PREORDER,
             1.0,
-            now,
-            now.plusSeconds(1)
+            now
         );
+        product.setDateModified(now.plusSeconds(1));
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -151,9 +150,10 @@ public class ProductServiceTest {
             new BigDecimal("9999"),
             ProductStatus.DISCONTINUED,
             1.0,
-            now,
-            now.plusSeconds(2)
+            now
         );
+        product.setDateModified(now.plusSeconds(2));
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -177,9 +177,10 @@ public class ProductServiceTest {
             new BigDecimal("9999"),
             ProductStatus.DISCONTINUED,
             1.0,
-            now,
             now
         );
+        product.setDateModified(now);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -205,9 +206,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -232,9 +234,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -259,9 +262,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -286,9 +290,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -313,9 +318,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -340,9 +346,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -367,9 +374,10 @@ public class ProductServiceTest {
             new BigDecimal("0"), // Invalid
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -394,9 +402,10 @@ public class ProductServiceTest {
             new BigDecimal("10000"), // Invalid
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -421,9 +430,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -448,9 +458,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             null, // Invalid
             null,
-            now,
-            null
+            now
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -475,9 +486,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             -1.0, // Invalid
-            now,
             now
         );
+        product.setDateModified(now);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -502,9 +514,10 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
             now
         );
+        product.setDateModified(now);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -529,15 +542,22 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now.plusSeconds(1), // Invalid Business Rule
-            null
+            now.plusSeconds(1)
         );
+        product.setDateModified(null);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
         // Assert: Fails as expected, exposing missing validation
-        assertTrue(violations.isEmpty(), "FAILS: @PastOrPresent is missing for dateAdded");
+        assertEquals(1, violations.size(), "Should have one violation");
+        ConstraintViolation<Product> violation = violations.iterator().next();
+        assertEquals("dateAdded", violation.getPropertyPath().toString(), "Violation should be on 'dateModified'");
+        assertTrue(
+            violation.getMessage().toLowerCase().contains("must not be before dateAdded"),
+            "Violation message should indicate dateModified must be after dateAdded"
+        );
     }
 
     @Test
@@ -555,9 +575,9 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            null, // Invalid
-            null
+            null    // Invalido porque notnullable
         );
+        product.setDateModified(null);
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
@@ -582,16 +602,22 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
             now
         );
+        product.setDateModified(now);
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
         // Assert: Fails as expected, exposing missing validation
-        assertTrue(violations.isEmpty(), "FAILS: Cross-field validation for dates is missing");
-    }
+        assertEquals(1, violations.size(), "Should have one violation");
+        ConstraintViolation<Product> violation = violations.iterator().next();
+        assertEquals("dateModified", violation.getPropertyPath().toString(), "Violation should be on 'dateModified'");
+        assertTrue(
+            violation.getMessage().toLowerCase().contains("must not be before dateAdded"),
+            "Violation message should indicate dateModified must be after dateAdded"
+        );
 
     @Test
     public void testProductValidation_TC22_DateModifiedInFuture() {
@@ -608,15 +634,22 @@ public class ProductServiceTest {
             new BigDecimal("10"),
             ProductStatus.IN_STOCK,
             null,
-            now,
-            now.plusSeconds(1) // Invalid Business Rule
+            now
         );
+        product.setDateModified(now.plusSeconds(1));
+
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
         // Assert: Fails as expected, exposing missing validation
-        assertTrue(violations.isEmpty(), "FAILS: @PastOrPresent is missing for dateModified");
+        assertEquals(1, violations.size(), "Should have one violation");
+        ConstraintViolation<Product> violation = violations.iterator().next();
+        assertEquals("dateModified", violation.getPropertyPath().toString(), "Violation should be on 'dateModified'");
+        assertTrue(
+            violation.getMessage().toLowerCase().contains("must not be before dateAdded"),
+            "Violation message should indicate dateModified must be after dateAdded"
+        );
     }
 
 }
