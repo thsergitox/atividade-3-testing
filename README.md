@@ -73,6 +73,14 @@ Estes testes verificam se a entidade `Product` rejeita dados que violam as regra
     -   **Objetivo:** Expor a falta de uma validação cruzada que garanta que a data de modificação seja sempre posterior à data de adição. **Este teste foi projetado para falhar.**  
 - **TC22 (testProductValidation\_TC22\_DateModifiedInFuture):**
     -   **Objetivo:** Expor a falta de validação que impede o uso de uma data de modificação no futuro. **Este teste foi projetado para falhar.**
+-   **TC22 (testProductValidation\_TC22\_DateModifiedInPast):**
+    -   **Objetivo:** Garantir que uma data de modificação anterior à data de adição seja rejeitada.
+-   **TC23 (testProductValidation\_TC23\_TitleIsNull):**
+    -   **Objetivo:** Garantir que um título nulo seja rejeitado.
+-   **TC24 (testProductValidation\_TC24\_PriceIsNull):**
+    -   **Objetivo:** Garantir que um preço nulo seja rejeitado.
+-   **TC25 (testProductValidation\_TC25\_QuantityInStockIsNull):**
+    -   **Objetivo:** Garantir que uma quantidade em estoque nula seja rejeitada.
 
 
 > **Nota Importante sobre os Testes de Data:**
@@ -104,4 +112,4 @@ Para compilar, testar e executar a aplicação, utilize os seguintes comandos Ma
 ## Captura de Tela 
 
 
-![alt text](image.png)
+![alt text](captura_de_tela.png)
