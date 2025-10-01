@@ -49,7 +49,7 @@ public class ProductServiceTest {
             .price(price)
             .status(status)
             .weight(weight)
-            .dateAdded(dateAdded)
+            .dateAdded(dateAdded);
 
         return product;
     }
@@ -618,7 +618,7 @@ public class ProductServiceTest {
             violation.getMessage().toLowerCase().contains("must not be before dateAdded"),
             "Violation message should indicate dateModified must be after dateAdded"
         );
-
+    }
     @Test
     public void testProductValidation_TC22_DateModifiedInFuture() {
         // Arrange
