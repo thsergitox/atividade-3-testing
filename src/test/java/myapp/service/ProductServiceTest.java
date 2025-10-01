@@ -353,7 +353,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC112_PriceTooLow() {
+    public void testProductValidation_TC12_PriceTooLow() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
@@ -361,7 +361,7 @@ public class ProductServiceTest {
             "Title",
             null,
             null,
-            11,
+            null,
             0,
             null,
             new BigDecimal("0"), // Invalid
@@ -388,7 +388,7 @@ public class ProductServiceTest {
             "Title",
             null,
             null,
-            11,
+            null,
             0,
             null,
             new BigDecimal("10000"), // Invalid
