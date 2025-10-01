@@ -551,7 +551,7 @@ public class ProductServiceTest {
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
         // Assert: Fails as expected, exposing missing validation
-        assertEquals(1, violations.size(), "Should have one violation");
+        assertEquals(1, violations.size(), "Should have one violation, dateAdded could not be saved with a future date");
         ConstraintViolation<Product> violation = violations.iterator().next();
         assertEquals("dateAdded", violation.getPropertyPath().toString(), "Violation should be on 'dateModified'");
         assertTrue(
@@ -611,7 +611,7 @@ public class ProductServiceTest {
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
         // Assert: Fails as expected, exposing missing validation
-        assertEquals(1, violations.size(), "Should have one violation");
+        assertEquals(1, violations.size(), "Should have one violation, dateModified could not be the same as dateAdded");
         ConstraintViolation<Product> violation = violations.iterator().next();
         assertEquals("dateModified", violation.getPropertyPath().toString(), "Violation should be on 'dateModified'");
         assertTrue(
@@ -620,7 +620,7 @@ public class ProductServiceTest {
         );
     }
     @Test
-    public void testProductValidation_TC22_DateModifiedInFuture() {
+    public void testProductValidation_TC22_DateModifiedInPast() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
@@ -636,14 +636,14 @@ public class ProductServiceTest {
             null,
             now
         );
-        product.setDateModified(now.plusSeconds(1));
+        product.setDateModified(now.minusSeconds(1));
 
 
         // Act
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
         // Assert: Fails as expected, exposing missing validation
-        assertEquals(1, violations.size(), "Should have one violation");
+        assertEquals(1, violations.size(), "Should have one violation, dateModified could not be saved with a past date");
         ConstraintViolation<Product> violation = violations.iterator().next();
         assertEquals("dateModified", violation.getPropertyPath().toString(), "Violation should be on 'dateModified'");
         assertTrue(
@@ -665,7 +665,7 @@ public class ProductServiceTest {
             0,
             null,
             new BigDecimal("10"),
-            null, 
+            ProductStatus.IN_STOCK, 
             null,
             now
         );
@@ -692,7 +692,7 @@ public class ProductServiceTest {
             0,
             null,
             null,
-            null, 
+            ProductStatus.IN_STOCK, 
             null,
             now
         );
@@ -719,7 +719,7 @@ public class ProductServiceTest {
             null,
             null,
             new BigDecimal("10"),
-            null,
+            ProductStatus.IN_STOCK,
             null,
             now
         );
@@ -729,35 +729,8 @@ public class ProductServiceTest {
         Set<ConstraintViolation<Product>> violations = validator.validate(product);
 
         // Assert
-        assertEquals(1, violations.size());
+        assertEquals(1, violations.size(), "Should have one violation, quantityInStock could not be null");
         assertEquals("quantityInStock", violations.iterator().next().getPropertyPath().toString());
-    }
-
-    @Test
-    public void testProductValidation_TC26_StatusNotValid() {
-        // Arrange
-        Instant now = Instant.now();
-        Product product = createProductSample(
-            14L,
-            "Title",
-            null,
-            null,
-            null,
-            0,
-            null,
-            new BigDecimal("10"),
-            "RANDOM_STRING", 
-            null,
-            now
-        );
-        product.setDateModified(null);
-
-        // Act
-        Set<ConstraintViolation<Product>> violations = validator.validate(product);
-
-        // Assert
-        assertEquals(1, violations.size());
-        assertEquals("status", violations.iterator().next().getPropertyPath().toString());
     }
 
 

@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><HTML>
+    <HEAD><TITLE>Equivalence partitions</TITLE></HEAD>
+    <BODY>
+        <H1>Equivalence classes:</H1>
+            <TABLE border="1" cellpadding="2" cellspacing="0"><TR bgcolor="DarkGray">
+                <TD><strong><i>Equivalence class</strong></i></TD>
+                <TD><strong><i>Valid range</strong></i></TD>
+                <TD><strong><i>Invalid range</strong></i></TD></TR>
+                <TR><TD valign=top>Título</TD><TD valign=top>3 <= t <= 100 (1)</TD><TD valign=top>t < 3 (2) | t > 100 (3) | null (38)</TD></TR>
+                <TR><TD valign=top>Palavra-chave</TD><TD valign=top>null  (4) | 0 <= k <= 200 (5)</TD><TD valign=top>k > 200 (6)</TD></TR>
+                <TR><TD valign=top>Descrição</TD><TD valign=top>null (7) | d >= 50 (8)</TD><TD valign=top>0 <= d < 50 (9)</TD></TR>
+                <TR><TD valign=top>Avaliações</TD><TD valign=top>null (10) | 1 <= A <= 10 (11)</TD><TD valign=top>A < 1 (12) | A > 10 (13)</TD></TR>
+                <TR><TD valign=top>Preço</TD><TD valign=top>1 <= p <= 9999 (14)</TD><TD valign=top>p < 1 (15) | p > 9999 (16) | null (39)</TD></TR>
+                <TR><TD valign=top>Estoque</TD><TD valign=top>E >= 0 (17)</TD><TD valign=top>E < 0 (18) | null (40)</TD></TR>
+                <TR><TD valign=top>Status</TD><TD valign=top>s = IN_STOCK (19) | s = OUT_OF_STOCK (20) | s = PREORDER (21) | s = DISCONTINUED (22)</TD><TD valign=top>s != valid (23)</TD></TR>
+                <TR><TD valign=top>Peso</TD><TD valign=top>null (24) | p > = 0 (25)</TD><TD valign=top>p < 0 (26)</TD></TR>
+                <TR><TD valign=top>Dimensões</TD><TD valign=top>null (27) | 0 <= D <= 50 (28)</TD><TD valign=top>D < 0 (29) | D > 50 (30)</TD></TR>
+                <TR><TD valign=top>Data de adição</TD><TD valign=top>tsA <= ts atual (31)</TD><TD valign=top>tsA > ts atual (32) | null (33)</TD></TR>
+                <TR><TD valign=top>Data de modificação</TD><TD valign=top>null (34) | tsA < tsM <= ts atual (35)</TD><TD valign=top>tsM >= ts atual (36) | tsM < tsA (37)</TD></TR>
+            </TABLE>
+        <H1>Valid test cases:</H1>
+            <TABLE border="1" cellpadding="2" cellspacing="0"><TR bgcolor="DarkGray"><TD><strong><i>Equivalence class</strong></i></TD>
+                <TD><strong><i>TC 1</strong></i></TD>
+                <TD><strong><i>TC 2</strong></i></TD>
+                <TD><strong><i>TC 3</strong></i></TD>
+                <TD><strong><i>TC 4</strong></i></TD>
+                <TD><strong><i>TC 5</strong></i></TD></TR>
+                <TR><TD valign=top>Título</TD><TD valign=top>TC1</TD><TD valign=top>TC_2</TD><TD valign=top>"a.repeat(99)"</TD><TD valign=top>"a.repeat(100)"</TD><TD valign=top>Valid</TD></TR>
+                <TR><TD valign=top>Palavra-chave</TD><TD valign=top>null </TD><TD valign=top>""</TD><TD valign=top>a</TD><TD valign=top>"a.repeat(199)"</TD><TD valign=top>"a.repeat(200)"</TD></TR>
+                <TR><TD valign=top>Descrição</TD><TD valign=top>null</TD><TD valign=top>"a.repeat(50)"</TD><TD valign=top>"a.repeat(51)"</TD><TD valign=top>null</TD><TD valign=top>null</TD></TR>
+                <TR><TD valign=top>Avaliações</TD><TD valign=top>null</TD><TD valign=top>1</TD><TD valign=top>2</TD><TD valign=top>9</TD><TD valign=top>10</TD></TR>
+                <TR><TD valign=top>Preço</TD><TD valign=top>1</TD><TD valign=top>2</TD><TD valign=top>9998</TD><TD valign=top>9999</TD><TD valign=top>9999</TD></TR>
+                <TR><TD valign=top>Estoque</TD><TD valign=top>0</TD><TD valign=top>1</TD><TD valign=top>1</TD><TD valign=top>1</TD><TD valign=top>1</TD></TR>
+                <TR><TD valign=top>Status</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = OUT_OF_STOCK</TD><TD valign=top>s = PREORDER</TD><TD valign=top>s = DISCONTINUED</TD><TD valign=top>s = DISCONTINUED</TD></TR>
+                <TR><TD valign=top>Peso</TD><TD valign=top>null</TD><TD valign=top>0</TD><TD valign=top>1</TD><TD valign=top>1</TD><TD valign=top>1</TD></TR>
+                <TR><TD valign=top>Dimensões</TD><TD valign=top>null</TD><TD valign=top>""</TD><TD valign=top>a</TD><TD valign=top>"a.repeat(49)"</TD><TD valign=top>"a.repeat(50)"</TD></TR>
+                <TR><TD valign=top>Data de adição</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual - 1s</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD></TR>
+                <TR><TD valign=top>Data de modificação</TD><TD valign=to    p>null</TD><TD valign=top>ts_atual</TD><TD valign=top>tsA + 1s</TD><TD valign=top>tsA + 2s</TD><TD valign=top>null</TD></TR>
+                <TR bgcolor="LightGrey"><TD valign=top align="right">Covers</TD><TD valign=top>1, 4, 7, 10, 14, 17, 19, 24, 27, 31, 34</TD><TD valign=top>1, 5, 8, 11, 14, 17, 20, 25, 28, 31, 35</TD><TD valign=top>1, 5, 8, 11, 14, 17, 21, 25, 28, 31, 35</TD><TD valign=top>1, 5, 8, 11, 14, 17, 22, 25, 28, 31, 35</TD><TD valign=top>1, 5, 8, 11, 14, 17, 22, 25, 28, 31, 35</TD></TR>
+            </TABLE>
+        <H1>Invalid test cases:</H1>
+            <TABLE border="1" cellpadding="2" cellspacing="0"><TR bgcolor="DarkGray"><TD><strong><i>Equivalence class</strong></i></TD>
+                <TD><strong><i>TC 6</strong></i></TD>
+                <TD><strong><i>TC 7</strong></i></TD>
+                <TD><strong><i>TC 8</strong></i></TD>
+                <TD><strong><i>TC 9</strong></i></TD>
+                <TD><strong><i>TC 10</strong></i></TD>
+                <TD><strong><i>TC 11</strong></i></TD>
+                <TD><strong><i>TC 12</strong></i></TD>
+                <TD><strong><i>TC 13</strong></i></TD>
+                <TD><strong><i>TC 14</strong></i></TD>
+                <TD><strong><i>TC 15</strong></i></TD>
+                <TD><strong><i>TC 16</strong></i></TD>
+                <TD><strong><i>TC 17</strong></i></TD>
+                <TD><strong><i>TC 18</strong></i></TD>
+                <TD><strong><i>TC 19</strong></i></TD>
+                <TD><strong><i>TC 20</strong></i></TD>
+                <TD><strong><i>TC 21</strong></i></TD>
+                <TD><strong><i>TC 22</strong></i></TD>
+                <TD><strong><i>TC 23</strong></i></TD>
+                <TD><strong><i>TC 24</strong></i></TD>
+                <TD><strong><i>TC 25</strong></i></TD>
+                <TD><strong><i>TC 26</strong></i></TD></TR>
+                <TR><TD valign=top>Título</TD><TD valign=top>aa</TD><TD valign=top>"a.repeat(101)"</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>null</TD><TD valign=top>Title</TD><TD valign=top>Title</TD><TD valign=top>Title</TD></TR>
+                <TR><TD valign=top>Palavra-chave</TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>"a.repeat(201)"</TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD></TR>
+                <TR><TD valign=top>Descrição</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>"a.repeat(49)"</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD></TR>
+                <TR><TD valign=top>Avaliações</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>0</TD><TD valign=top>11</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD></TR>
+                <TR><TD valign=top>Preço</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>0</TD><TD valign=top>10000</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>10</TD><TD valign=top>null</TD><TD valign=top>10</TD><TD valign=top>10</TD></TR>
+                <TR><TD valign=top>Estoque</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>-1</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>0</TD><TD valign=top>null</TD><TD valign=top>0</TD></TR>
+                <TR><TD valign=top>Status</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>null</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = IN_STOCK</TD><TD valign=top>s = RANDOM_STRING</TD></TR>
+                <TR><TD valign=top>Peso</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>-1</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD></TR>
+                <TR><TD valign=top>Dimensões</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>D < 0 (Classe inatingível)</TD><TD valign=top>"a.repeat(51)"</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD></TR>
+                <TR><TD valign=top>Data de adição</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual + 1s</TD><TD valign=top>null</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD><TD valign=top>ts_atual</TD></TR>
+                <TR><TD valign=top>Data de modificação</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>null</TD><TD valign=top>tsA</TD><TD valign=top>ts_atual + 1s</TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD><TD valign=top>null </TD></TR>
+                <TR bgcolor="LightGrey"><TD valign=top align="right">Covers</TD><TD valign=top>2, 4, 7, 10, 14, 17, 19, 24, 27, 31, 34</TD><TD valign=top>3, 4, 7, 10, 14, 17, 19, 24, 27, 31, 34</TD><TD valign=top>1, 6, 7, 10, 14, 17, 19, 24, 27, 31, 34</TD><TD valign=top>1, 4, 9, 10, 14, 17, 19, 24, 27, 31, 34</TD><TD valign=top>1, 4, 7, 12, 14, 17, 19, 24, 27, 31, 34</TD><TD valign=top>1, 4, 7, 13, 14, 17, 19, 24, 27, 31, 34</TD><TD valign=top>1, 4, 7, 10, 15, 17, 19, 24, 27, 31, 34</TD><TD valign=top>1, 4, 7, 10, 16, 17, 19, 24, 27, 31, 34</TD><TD valign=top>1, 4, 7, 10, 14, 18, 19, 24, 27, 31, 34</TD><TD valign=top>1, 4, 7, 10, 14, 17, 23, 24, 27, 31, 34</TD><TD valign=top>1, 4, 7, 10, 14, 17, 19, 26, 27, 31, 34</TD><TD valign=top>1, 4, 7, 10, 14, 17, 19, 24, 29, 31, 34</TD><TD valign=top>1, 4, 7, 10, 14, 17, 19, 24, 30, 31, 34</TD><TD valign=top>1, 4, 7, 10, 14, 17, 19, 24, 27, 32, 34</TD><TD valign=top>1, 4, 7, 10, 14, 17, 19, 24, 27, 33, 34</TD><TD valign=top>1, 4, 7, 10, 14, 17, 19, 24, 27, 31, 36</TD><TD valign=top>1, 4, 7, 10, 14, 17, 19, 24, 27, 31, 37</TD><TD valign=top>4, 7, 10, 14, 17, 19, 24, 27, 31, 34, 38</TD><TD valign=top>1, 4, 7, 10, 17, 19, 24, 27, 31, 34, 39</TD><TD valign=top>1, 4, 7, 10, 14, 19, 24, 27, 31, 34, 40</TD><TD valign=top>1, 4, 7, 10, 14, 17, 23, 24, 27, 31, 34</TD></TR>
+            </TABLE>
+        </BODY>
+    </HTML>
