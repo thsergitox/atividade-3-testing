@@ -434,7 +434,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testProductValidation_TC15_StatusUnexpected() {
+    public void testProductValidation_TC15_StatusIsNull() {
         // Arrange
         Instant now = Instant.now();
         Product product = createProductSample(
